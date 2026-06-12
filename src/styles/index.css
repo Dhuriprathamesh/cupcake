@@ -214,12 +214,60 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
+   MOBILE PERFORMANCE — biggest perf wins for smooth 60fps on Android/iOS
+   backdrop-filter blur is the #1 GPU killer on mobile Chrome / WebView.
+   We strip it on small screens — background-color opacity provides the
+   visual glass effect without the cost.
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* ── Strip expensive backdrop-filter on ALL elements ── */
+  * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* ── Touch targets: faster taps, no 300ms delay ── */
+  button, a, [role="button"], input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  /* ── Prevent bounce/overscroll lag ── */
+  body {
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+  }
+
+  /* ── Reduce blur cost on mobile ── */
+  .blur-3xl { filter: blur(25px) !important; }
+  .blur-2xl { filter: blur(16px) !important; }
+  .blur-xl  { filter: blur(10px) !important; }
+  .blur-lg  { filter: blur(6px)  !important; }
+
+  /* ── GPU promote nav and header ── */
+  header, nav {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+  }
+}
+
+/* ── Respect user's reduced-motion setting ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:       0.01ms !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
    SCROLLBAR
 ══════════════════════════════════════════════════════════════════════════ */
 ::-webkit-scrollbar         { width:4px; height:4px; }
 ::-webkit-scrollbar-track   { background:transparent; }
 ::-webkit-scrollbar-thumb   { background:rgba(139,92,246,0.4); border-radius:2px; }
 ::-webkit-scrollbar-thumb:hover { background:rgba(139,92,246,0.7); }
+
 
 /* ══════════════════════════════════════════════════════════════════════════
    DECORATIVE PATTERNS

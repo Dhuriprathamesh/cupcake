@@ -47,21 +47,27 @@ export default function DashboardHome() {
 
   return (
     <div className="relative min-h-full">
-      {/* Ambient bg */}
+      {/* Ambient bg — static on mobile, subtle animation on desktop */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div animate={{ scale:[1,1.1,1], opacity:[0.6,1,0.6] }} transition={{ repeat:Infinity, duration:10, ease:'easeInOut' }}
-          className="absolute -top-32 -left-20 w-80 h-80 rounded-full blur-3xl" style={{ background:'rgba(139,92,246,0.15)' }} />
-        <motion.div animate={{ scale:[1,1.15,1] }} transition={{ repeat:Infinity, duration:13, ease:'easeInOut', delay:3 }}
-          className="absolute -bottom-20 -right-20 w-72 h-72 rounded-full blur-3xl" style={{ background:'rgba(255,107,151,0.10)' }} />
-        {/* Floating emojis */}
+        <div className="absolute -top-32 -left-20 w-80 h-80 rounded-full blur-3xl hidden md:block"
+          style={{ background:'rgba(139,92,246,0.15)' }} />
+        <div className="absolute -bottom-20 -right-20 w-72 h-72 rounded-full blur-3xl hidden md:block"
+          style={{ background:'rgba(255,107,151,0.10)' }} />
+        {/* Subtle static blobs for mobile (no animation = no jank) */}
+        <div className="absolute -top-32 -left-20 w-64 h-64 rounded-full md:hidden"
+          style={{ background:'rgba(139,92,246,0.12)', filter:'blur(50px)' }} />
+        <div className="absolute -bottom-20 -right-20 w-56 h-56 rounded-full md:hidden"
+          style={{ background:'rgba(255,107,151,0.08)', filter:'blur(40px)' }} />
+        {/* Floating emojis — desktop only */}
         {['⭐','💫','✨','🌟'].map((e,i) => (
           <motion.div key={e}
-            animate={{ y:[0,-30,0], opacity:[0.3,0.7,0.3], rotate:[0,15,-15,0] }}
+            animate={{ y:[0,-30,0], opacity:[0.3,0.7,0.3] }}
             transition={{ repeat:Infinity, duration:4+i*1.5, delay:i*0.8, ease:'easeInOut' }}
-            className="absolute text-xl pointer-events-none select-none"
+            className="absolute text-xl pointer-events-none select-none hidden md:block"
             style={{ left:`${15+i*22}%`, top:`${10+i*8}%` }}>{e}</motion.div>
         ))}
       </div>
+
 
       <div className="relative z-10 p-3 md:p-7 space-y-5 max-w-6xl mx-auto w-full">
 
