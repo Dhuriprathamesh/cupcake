@@ -1,0 +1,452 @@
+/* ── Google Fonts — MUST be first ────────────────────────────────────────────
+   display=swap ensures text renders immediately in fallback font while
+   loading — critical for mobile performance                               */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════════════════════════════════════ */
+@theme {
+  /* Palette */
+  --color-cozy-dark:      #07050F;
+  --color-cozy-deep:      #0F0B1E;
+  --color-cozy-soft:      #1A1530;
+  --color-cozy-text:      #F1EDFA;
+  --color-cozy-muted:     #9E97B8;
+
+  /* Accents */
+  --color-accent-pink:    #FF6B97;
+  --color-accent-purple:  #8B5CF6;
+  --color-accent-cyan:    #06B6D4;
+  --color-accent-yellow:  #FCD34D;
+  --color-accent-green:   #34D399;
+  --color-accent-orange:  #FB923C;
+
+  /* Backgrounds */
+  --background-image-cozy-gradient: radial-gradient(ellipse at top left, #1C1537 0%, #07050F 60%);
+  --zone-bg-home:     radial-gradient(ellipse 80% 60% at 50% 0%, #1a0f3a 0%, #07050F 70%);
+  --zone-bg-games:    radial-gradient(ellipse 80% 60% at 50% 0%, #1a0a00 0%, #07050F 70%);
+  --zone-bg-chat:     radial-gradient(ellipse 80% 60% at 50% 0%, #1a0f1a 0%, #07050F 70%);
+  --zone-bg-music:    radial-gradient(ellipse 80% 60% at 50% 0%, #001a2e 0%, #07050F 70%);
+  --zone-bg-memories: radial-gradient(ellipse 80% 60% at 50% 0%, #1a1200 0%, #07050F 70%);
+  --zone-bg-ai:       radial-gradient(ellipse 80% 60% at 50% 0%, #0d001a 0%, #07050F 70%);
+
+  /* Animations */
+  --animate-float:      float     4s  ease-in-out infinite;
+  --animate-float-slow: float     7s  ease-in-out infinite;
+  --animate-pulse-slow: pulse     5s  ease-in-out infinite;
+  --animate-spin-slow:  spin      14s linear     infinite;
+  --animate-wiggle:     wiggle    0.5s ease-in-out;
+  --animate-bounce-in:  bounceIn  0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --animate-slide-up:   slideUp   0.3s ease-out;
+  --animate-shake:      shake     0.4s ease-in-out;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════════════════════════════════════ */
+@keyframes float         { 0%,100% { transform:translateY(0);                        } 50%  { transform:translateY(-12px);    } }
+@keyframes wiggle        { 0%,100% { transform:rotate(0deg);                         } 25%  { transform:rotate(-6deg);  } 75% { transform:rotate(6deg); } }
+@keyframes bounceIn      { 0%      { transform:scale(0.3);    opacity:0;             } 60%  { transform:scale(1.08);    } 100% { transform:scale(1); opacity:1; } }
+@keyframes slideUp       { from    { transform:translateY(16px); opacity:0;          } to   { transform:translateY(0);  opacity:1; } }
+@keyframes shake         { 0%,100% { transform:translateX(0);                        } 20%  { transform:translateX(-6px); } 40% { transform:translateX(6px); } 60% { transform:translateX(-4px); } 80% { transform:translateX(4px); } }
+@keyframes gradShift     { 0%      { background-position:0% 50%;                    } 50%  { background-position:100% 50%; } 100% { background-position:0% 50%; } }
+@keyframes neonPulse     { 0%,100% { box-shadow:0 0 5px currentColor,0 0 10px currentColor; } 50% { box-shadow:0 0 20px currentColor,0 0 40px currentColor; } }
+@keyframes particleFloat { 0%      { transform:translateY(100vh) rotate(0deg);      opacity:0; } 10% { opacity:1; } 90% { opacity:1; } 100% { transform:translateY(-20vh) rotate(720deg); opacity:0; } }
+@keyframes scanLine      { 0%      { transform:translateY(-100%);                   } 100% { transform:translateY(100vh); } }
+@keyframes popIn         { 0%      { transform:scale(0) rotate(-15deg);             } 70%  { transform:scale(1.15) rotate(3deg); } 100% { transform:scale(1) rotate(0deg); } }
+@keyframes rainbow       { 0%      { filter:hue-rotate(0deg);                       } 100% { filter:hue-rotate(360deg); } }
+@keyframes typewriter    { from    { width:0;                                        } to   { width:100%; } }
+@keyframes slideInRight  { from    { transform:translateX(20px); opacity:0;         } to   { transform:translateX(0);   opacity:1; } }
+@keyframes fadeUp        { from    { transform:translateY(12px); opacity:0;         } to   { transform:translateY(0);   opacity:1; } }
+@keyframes heartbeat     { 0%,100% { transform:scale(1);                            } 14%  { transform:scale(1.15); } 28% { transform:scale(1); } 42% { transform:scale(1.1); } 70% { transform:scale(1); } }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+══════════════════════════════════════════════════════════════════════════ */
+@utility glass-panel {
+  background: rgba(20,15,40,0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+@utility glass-card {
+  background: rgba(15,11,30,0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+@utility glass-funky {
+  background: rgba(25,18,50,0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 1px rgba(139,92,246,0.1), 0 20px 60px rgba(0,0,0,0.5);
+}
+
+@utility text-glow        { text-shadow: 0 0 20px rgba(139,92,246,0.6),  0 0 40px rgba(139,92,246,0.3);  }
+@utility text-glow-pink   { text-shadow: 0 0 20px rgba(255,107,151,0.7), 0 0 40px rgba(255,107,151,0.3); }
+@utility text-glow-cyan   { text-shadow: 0 0 20px rgba(6,182,212,0.7),   0 0 40px rgba(6,182,212,0.3);   }
+@utility text-glow-yellow { text-shadow: 0 0 20px rgba(252,211,77,0.7),  0 0 40px rgba(252,211,77,0.3);  }
+
+@utility text-rainbow {
+  background: linear-gradient(90deg, #FF6B97, #8B5CF6, #06B6D4, #34D399, #FCD34D, #FF6B97);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradShift 4s linear infinite;
+}
+
+@utility neon-border-purple { border:1px solid rgba(139,92,246,0.5); box-shadow:0 0 10px rgba(139,92,246,0.3), inset 0 0 10px rgba(139,92,246,0.05); }
+@utility neon-border-pink   { border:1px solid rgba(255,107,151,0.5); box-shadow:0 0 10px rgba(255,107,151,0.3), inset 0 0 10px rgba(255,107,151,0.05); }
+@utility neon-border-cyan   { border:1px solid rgba(6,182,212,0.5);   box-shadow:0 0 10px rgba(6,182,212,0.3),   inset 0 0 10px rgba(6,182,212,0.05);   }
+@utility neon-border-yellow { border:1px solid rgba(252,211,77,0.5);  box-shadow:0 0 10px rgba(252,211,77,0.3),  inset 0 0 10px rgba(252,211,77,0.05);  }
+
+@utility comic-card {
+  background: #fff;
+  border: 3px solid #1a1a1a;
+  box-shadow: 5px 5px 0px #1a1a1a;
+  border-radius: 16px;
+}
+@utility safe-area-top    { padding-top:    env(safe-area-inset-top,    0px); }
+@utility safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+@utility no-select        { user-select:none; -webkit-user-select:none; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BASE — MOBILE-FIRST TYPOGRAPHY SYSTEM
+══════════════════════════════════════════════════════════════════════════ */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+    scrollbar-gutter: stable;
+    /* Ensure correct viewport on iOS */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #07050F;
+    color: #F1EDFA;
+    /* Mobile-first base font: 15px on phones, 16px on tablets+ */
+    font-size: clamp(14px, 3.8vw, 16px);
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Display headings ── */
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    /* Fluid: 22px → 48px */
+    font-size: clamp(1.375rem, 5.5vw + 0.5rem, 3rem);
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    /* Fluid: 18px → 36px */
+    font-size: clamp(1.125rem, 4vw + 0.5rem, 2.25rem);
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    /* Fluid: 16px → 28px */
+    font-size: clamp(1rem, 3vw + 0.4rem, 1.75rem);
+  }
+  h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    /* Fluid: 14px → 22px */
+    font-size: clamp(0.875rem, 2.5vw + 0.3rem, 1.375rem);
+  }
+
+  /* ── Body text ── */
+  p { line-height: 1.6; }
+
+  .font-mono { font-family: 'Space Mono', monospace; }
+  .font-game { font-family: 'Nunito', sans-serif; }
+
+  /* Focus ring */
+  :focus-visible {
+    outline: 2px solid rgba(139,92,246,0.7);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE TYPOGRAPHY OVERRIDES
+   All text-[Npx] Tailwind classes are fine on desktop but need boosting
+   on very small screens (< 375px) and ensuring readability everywhere.
+══════════════════════════════════════════════════════════════════════════ */
+
+/* Ensure mono/label text is never illegible on mobile */
+@media (max-width: 480px) {
+  /* Boost tiny font-mono labels so they're actually readable */
+  .text-\[7px\]  { font-size: 9px  !important; }
+  .text-\[8px\]  { font-size: 10px !important; }
+  .text-\[9px\]  { font-size: 10px !important; }
+  .text-\[10px\] { font-size: 11px !important; }
+  .text-\[11px\] { font-size: 12px !important; }
+
+  /* Syne display headings scale down gracefully */
+  .text-xl   { font-size: 1.1rem  !important; }
+  .text-2xl  { font-size: 1.25rem !important; }
+  .text-3xl  { font-size: 1.5rem  !important; }
+  .text-4xl  { font-size: 1.75rem !important; }
+  .text-5xl  { font-size: 2rem    !important; }
+  .text-6xl  { font-size: 2.25rem !important; }
+  .text-7xl  { font-size: 2.5rem  !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar         { width:4px; height:4px; }
+::-webkit-scrollbar-track   { background:transparent; }
+::-webkit-scrollbar-thumb   { background:rgba(139,92,246,0.4); border-radius:2px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(139,92,246,0.7); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DECORATIVE PATTERNS
+══════════════════════════════════════════════════════════════════════════ */
+.particle      { position:absolute; border-radius:50%; pointer-events:none; animation:particleFloat linear infinite; }
+.scan-line     { position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,rgba(139,92,246,0.4),transparent); animation:scanLine 4s linear infinite; pointer-events:none; }
+.halftone-bg   { background-image:radial-gradient(circle,rgba(255,255,255,0.06) 1px,transparent 1px); background-size:20px 20px; }
+.retro-grid    { background-image:linear-gradient(rgba(139,92,246,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,0.08) 1px,transparent 1px); background-size:40px 40px; }
+.noise::after  { content:''; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; opacity:0.4; border-radius:inherit; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   GAME COMPONENTS
+══════════════════════════════════════════════════════════════════════════ */
+.btn-cartoon {
+  border: 3px solid rgba(0,0,0,0.8);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.8);
+  transition: transform 0.1s, box-shadow 0.1s;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+}
+.btn-cartoon:active { transform:translate(3px,3px); box-shadow:1px 1px 0 rgba(0,0,0,0.8); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FORM INPUTS — Prevent iOS zoom (font-size must be ≥ 16px)
+══════════════════════════════════════════════════════════════════════════ */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea, select { font-size: 16px; }
+
+/* Custom range slider */
+input[type="range"] { -webkit-appearance:none; appearance:none; height:4px; border-radius:4px; outline:none; cursor:pointer; background:rgba(255,255,255,0.1); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background:#fff; cursor:pointer; box-shadow:0 0 6px rgba(0,0,0,0.4); transition:transform 0.1s; }
+input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.2); }
+input[type="range"]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:#fff; cursor:pointer; border:none; box-shadow:0 0 6px rgba(0,0,0,0.4); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PAGE LAYOUT
+══════════════════════════════════════════════════════════════════════════ */
+/* Public pages: flex-col min-h-screen, footer stays at bottom */
+footer { width:100%; flex-shrink:0; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE SYSTEM
+   Breakpoints: xs=375 · sm=480 · md=768 · lg=1024
+══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Touch targets: min 44px × 44px (Apple HIG requirement) ── */
+@media (max-width: 768px) {
+  button, a[href], [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Exception: icon-only buttons in tight UI */
+  button.icon-sm { min-height: 32px; min-width: 32px; }
+
+  /* Reduce heavy blur for mobile GPU performance */
+  .glass-panel, .glass-card, .glass-funky {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Cards: tighter padding on mobile */
+  .card-mobile {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Horizontal scroll containers: momentum + hide scrollbar */
+  .scroll-x-mobile {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+  .scroll-x-mobile::-webkit-scrollbar { display: none; }
+  .scroll-x-mobile > * { scroll-snap-align: start; }
+}
+
+/* ── Mobile font-mono tracking fix ─────────────────────────────
+   Space Mono can look cramped on mobile with tight tracking       */
+@media (max-width: 480px) {
+  .font-mono, [class*="font-mono"] {
+    letter-spacing: 0.01em;
+  }
+
+  /* Category pills / badge text — enforce min readable size */
+  .text-\[7px\], .text-\[8px\]   { font-size: 10px !important; letter-spacing: 0.02em; }
+  .text-\[9px\], .text-\[10px\]  { font-size: 11px !important; }
+  .text-\[11px\], .text-xs        { font-size: 12px !important; }
+
+  /* Syne display headings */
+  .text-xl  { font-size: clamp(1.1rem, 5vw, 1.25rem)  !important; }
+  .text-2xl { font-size: clamp(1.2rem, 6vw, 1.5rem)   !important; }
+  .text-3xl { font-size: clamp(1.4rem, 7vw, 1.875rem) !important; }
+  .text-4xl { font-size: clamp(1.5rem, 8vw, 2.25rem)  !important; }
+  .text-5xl { font-size: clamp(1.75rem, 9vw, 3rem)    !important; }
+  .text-6xl { font-size: clamp(2rem, 10vw, 3.75rem)   !important; }
+  .text-7xl { font-size: clamp(2.25rem, 11vw, 4.5rem) !important; }
+
+  /* Compact spacing in dense mobile UI */
+  .gap-mobile { gap: 8px !important; }
+  .p-mobile   { padding: 12px !important; }
+}
+
+/* ── Small phones (< 360px) extra compact ── */
+@media (max-width: 360px) {
+  body { font-size: 13px; }
+  .text-sm  { font-size: 12px !important; }
+  .text-base{ font-size: 13px !important; }
+  .text-lg  { font-size: 15px !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE BOTTOM NAV CLEARANCE
+   DuoRoomLayout <main> has pb-16 md:pb-0
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .min-h-full { min-height: calc(100% - 0px); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE BOTTOM NAV — visual polish
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Bottom nav tab labels always readable */
+  nav [class*="text-\[7px\]"],
+  nav [class*="text-\[8px\]"] {
+    font-size: 9px !important;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Nav tab emoji larger on mobile */
+  nav .text-xl { font-size: 1.25rem !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   GAME CARDS MOBILE
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  /* UNO card sizing */
+  .uno-card-sm { transform: scale(0.88); }
+
+  /* Game board full-bleed */
+  .game-board-grid { max-width: 100% !important; }
+
+  /* Reaction Blitz target: still big enough to tap */
+  .reaction-target {
+    width: 100px !important;
+    height: 100px !important;
+    font-size: 3rem !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHAT MOBILE
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  /* Chat bubbles max-width */
+  .chat-bubble { max-width: 88% !important; }
+
+  /* Emoji/sticker picker compact */
+  .picker-emoji-btn { width: 36px !important; height: 36px !important; font-size: 1.2rem !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LANDSCAPE MOBILE
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-height: 500px) and (max-width: 768px) {
+  footer { padding-top:6px !important; padding-bottom:6px !important; }
+  footer p { font-size: 8px !important; }
+
+  /* Reduce top/bottom padding in landscape */
+  .py-mobile-land { padding-top: 8px !important; padding-bottom: 8px !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FLOATING CHAT BUTTON — position above keyboard on landscape
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-height: 500px) {
+  .floating-chat-btn { bottom: 60px !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS — reduced motion respect
+══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SELECTION COLOUR
+══════════════════════════════════════════════════════════════════════════ */
+::selection         { background: rgba(139,92,246,0.35); color: #fff; }
+::-moz-selection    { background: rgba(139,92,246,0.35); color: #fff; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SMOOTH SCROLLING
+══════════════════════════════════════════════════════════════════════════ */
+html { scroll-behavior: smooth; }
+* { -webkit-overflow-scrolling: touch; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PREVENT TEXT ORPHANS ON MOBILE
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  p, h1, h2, h3, h4 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ZONE BACKGROUND CLASSES (applied by DuoRoomLayout)
+══════════════════════════════════════════════════════════════════════════ */
+.zone-home     { background: var(--zone-bg-home)     !important; }
+.zone-games    { background: var(--zone-bg-games)    !important; }
+.zone-chat     { background: var(--zone-bg-chat)     !important; }
+.zone-music    { background: var(--zone-bg-music)    !important; }
+.zone-memories { background: var(--zone-bg-memories) !important; }
+.zone-ai       { background: var(--zone-bg-ai)       !important; }
